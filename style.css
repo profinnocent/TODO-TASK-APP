@@ -1,0 +1,69 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container{
+    background-color: aqua;
+    height: 95%;
+    width: 95%;
+    max-width: 500px;
+    border: 2px solid brown;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.inputs{
+    text-align: center;
+    margin: 10px 0 20px;
+}
+
+input{
+    height: 30px;
+}
+
+#inputbox{
+    width: 75%;
+    padding: 0 5px;
+    border-radius: 5px;
+    border: 2px solid brown;
+    background-color: whitesmoke;
+}
+
+#addbtn{
+    width: 20%;
+    background-color: brown;
+    border-radius: 5px;
+    box-shadow: 2px 2px 1px ;
+    color: whitesmoke;
+}
+
+.liclass{
+    margin: 5px 10px;
+    border-radius: 5px;
+    border:2px solid brown;
+    padding: 3px 10px;
+    display: flex;
+    justify-content: space-between;
+    background-color: whitesmoke;
+}
+
+.delbtn{
+background-color: brown;
+padding: 1px 5px;
+border-radius: 5px;
+color: whitesmoke;
+}
+
+.remclass{
+    display: none;
+}
