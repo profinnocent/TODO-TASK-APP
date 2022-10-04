@@ -1,3 +1,11 @@
+:root{
+    --priclr:#06283d;
+    --secclr:#256d85;
+    --actclr:#4785ff;
+    --offwyt:#dffdff;
+    --dulred: rgb(245, 24, 24);
+}
+
 *{
     padding: 0;
     margin: 0;
@@ -10,59 +18,241 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: var(--offwyt);
+}
+
+button{
+    cursor: pointer;
+}
+
+.top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+#regbtn{
+    background-color: transparent;
+    border: 1px solid var(--offwyt);
+    padding:5px 10px;
+    border-radius: 50px;
+    color: var(--offwyt);
+}
+
+.nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+padding: 5px 7px;
+height: 70px;
+border-bottom: 1px solid var(--offwyt);
+margin-bottom: 20px;
+}
+
+.logoarea{
+    display: flex;
+    align-items: center;
+    
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+    color: var(--offwyt);
+    margin: 5px;
+    visibility: hidden;
+}
+
+#hispan{
+    margin-left: 5px;
+}
+
+#lbtn{
+    color: var(--offwyt);
+    padding: 5px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--actclr);
+    font-size: 1rem;
+    font-weight: bolder;
+    text-transform:capitalize;
+}
+
+.regformdiv{
+    /* position: absolute;
+    visibility: hidden; */
+    display: none;
+    border: 2px solid var(--offwyt);
+margin: 10px;
+margin-bottom: 150px;
+padding: 50px 10px;
+border-radius: 10px;
+/* background-color: var(--secclr); */
+}
+
+.regformdiv h2{
+    text-align: center;
+    color: var(--offwyt);
+}
+
+#regform{
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    margin: auto;
+    padding: 10px 20px;
+}
+
+#regform input{
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: var(--offwyt);
+    outline: none;
+    border: none;
+    border-radius: 5px;
+}
+
+#regform #submitbtn{
+    background-color: var(--actclr);
+    font-size:medium;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+#closebtn{
+    background-color: transparent;
+    border: none;
+    color: var(--offwyt);
+    margin-left: 80px;
+    margin-top: 20px;
+    text-decoration: underline;
 }
 
 .container{
-    background-color: aqua;
+    background-color:var(--priclr);
     height: 95%;
     width: 95%;
     max-width: 500px;
-    border: 2px solid brown;
+    border: none;
     border-radius: 5px;
     padding: 10px;
+    /* color: var(--offwyt) */
 }
 
+#tagline{
+    text-align: center;
+    color: var(--offwyt);
+    margin-bottom: 7px;
+}
+
+h1{
+    color: var(--offwyt);
+    text-align: center;
+    padding-left: 5px;
+}
+
+.feedback{
+    text-align: center;
+    color: var(--offwyt);
+}
 .inputs{
     text-align: center;
     margin: 10px 0 20px;
 }
 
 input{
-    height: 30px;
+    height: 40px;
 }
 
 #inputbox{
-    width: 75%;
+    width: 95%;
     padding: 0 5px;
     border-radius: 5px;
-    border: 2px solid brown;
+    /* border: 2px solid brown; */
     background-color: whitesmoke;
+}
+
+.inputbtns{
+    margin-top: 10px;
 }
 
 #addbtn{
     width: 20%;
-    background-color: brown;
+    background-color:var(--actclr);
     border-radius: 5px;
-    box-shadow: 2px 2px 1px ;
-    color: whitesmoke;
+    box-shadow: 2px 2px 1px var(--offwyt) ;
+    color: var(--priclr);
+    font-weight: bold;
+}
+
+#searchbtn{
+    width: 20%;
+    background-color:var(--secclr);
+    border-radius: 5px;
+    box-shadow: 2px 2px 1px var(--offwyt) ;
+    color: var(--offwyt);
+    font-weight: bold;
+    margin: 0 20px;
+}
+
+ul{
+    display: flex;
+    flex-direction: column-reverse;
+    height: auto;
 }
 
 .liclass{
     margin: 5px 10px;
     border-radius: 5px;
-    border:2px solid brown;
-    padding: 3px 10px;
+    /* border:2px solid brown; */
+    padding: 5px 10px;
     display: flex;
     justify-content: space-between;
-    background-color: whitesmoke;
+    background-color: var(--offwyt);
 }
 
 .delbtn{
-background-color: brown;
-padding: 1px 5px;
+background-color: var(--dulred);
+padding: 5px 8px;
 border-radius: 5px;
-color: whitesmoke;
+color: var(--offwyt);
+font-weight: bold;
+border: none;
+    outline: none;
 }
+
+.editbtn{
+    background-color:var(--priclr);
+    padding: 5px 8px;
+    border-radius: 5px;
+    color: var(--offwyt);
+    font-weight: bold;
+    margin: 0 2px;
+    border: none;
+    outline: none;
+    }
+
+.donebtn{
+    background-color: red;
+    padding: 5px 8px;
+    border-radius: 5px;
+    color: var(--offwyt);
+    font-weight: bold;
+    border: none;
+    outline: none;
+    }    
+
+.donebtngreen{
+    background-color: green;
+    padding: 5px 8px;
+    border-radius: 5px;
+    color: var(--offwyt);
+    font-weight: bold;
+    border: none;
+    outline: none;
+    }
 
 .remclass{
     display: none;

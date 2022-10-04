@@ -1,33 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>TO-DO List JS APP</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
+      <div class="top">
         <h1>TODO LIST APP</h1>
-        <div class="inputs">
-            <input type="text" id="inputbox" placeholder="Enter a task here">
-            <input type="button" id="addbtn" value="Add a Task">
+        <button id="regbtn" onclick="showRegForm()">Register <span>&#10093;&#10093;</span></button>
+      </div>
+
+      <!-- Nav section -->
+      <div class="nav">
+        <div class="logoarea">
+          <img src="usericon.png" alt="" width="40px" />
+          <div class="logo">
+            <span id="hispan">Hi,&nbsp;</span>
+            <h3 id="username"></h3>
+          </div>
         </div>
-        <div class="taskpanel">
-            <ul>
-                <!-- <li class='remclass'>test item
+        <div class="lolibtn">
+          <button id="lbtn" onclick="showLoginForm()">Login</button>
+        </div>
+      </div>
+
+      <!-- Registration  -->
+      <div class="regformdiv">
+        <h2>Registration Form</h2>
+        <form id="regform">
+        <input type="text" name="nameinp" id="nameinp" placeholder="Enter your name">
+        <input type="email" name="emailinp" id="emailinp" placeholder="Enter your email" required>
+        <input type="password" name="passinp" id="passinp" placeholder="Enter your password" required>
+        <input type="password" name="passinp2" id="passinp2" placeholder="Enter confirm password">
+        <input type="submit" name="inpbtn" id="submitbtn">
+         </form>
+         <button id="closebtn" onclick="closeForm()">Click to Cancel (X)</button>
+      </div>
+
+
+      <div id="todoarea">
+      <!-- Todo section -->
+      <div class="inputs">
+        <p id="tagline">
+          ...get organised by managing all your tasks in one place.
+        </p>
+
+        <input type="text" id="inputbox" placeholder="Enter a task here" />
+        <div class="inputbtns">
+            <input type="button" id="addbtn" value="ADD" />
+            <input type="button" id="searchbtn" onclick="searchTodos()" value="SEARCH" />
+            <input type="button" id="addbtn" onclick="location.reload()" value="RESET" />
+        </div>
+      </div>
+      <div class="taskpanel">
+        <p class="feedback"></p>
+        <div>
+        <ul reversed>
+          <!-- <li class='remclass'>test item
                 <button class="delbtn">x</button>
                 </li> -->
-            </ul>
+        </ul>
         </div>
-
-
+      </div>
     </div>
-    
-
-
+    </div>
 
     <script src="main.js"></script>
-</body>
+  </body>
 </html>
