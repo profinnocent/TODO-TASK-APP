@@ -58,10 +58,10 @@ function getTodos() {
 
         showTodos(data);
       } else {
-        notify("... you have no scheduled tasks for now.");
+        feedback.innerText = "... you have no scheduled tasks for now.";
       }
     })
-    .catch((err) => notify('Bad request. Try again.') );
+    .catch((err) => feedback.innerText = 'Bad request or server temporarily down. Try again later.');
 }
 
 // ==== Display Scoreboard counts
