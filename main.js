@@ -4,17 +4,33 @@ const lBtn = document.getElementById('lbtn');
 const ul = document.querySelector("ul");
 const inputBox = document.querySelector("#inputbox");
 const feedback = document.querySelector(".feedback");
+const feedback1 = document.querySelector(".feedback1");
 const addBtn = document.querySelector("#addbtn");
 const regFormDiv = document.querySelector(".regformdiv");
 const regForm = document.querySelector("#regform");
 const submitBtn = document.querySelector("#submitbtn");
 
+const score1 = document.querySelector(".score1");
+const score2 = document.querySelector(".score2");
+const score3 = document.querySelector(".score3");
+const score4 = document.querySelector(".score4");
+
+let ctasks = 0;
+let cdone = 0;
+let cundone = 0;
+let cpercent = 0;
+
+
 // Print welcome info
-if (localStorage.getItem("curuser") != null) {
+if (localStorage.getItem("curuser") != "none") {
   welcome.style.visibility = "visible";
   username.innerText = localStorage.getItem("username");
   lBtn.innerText = "Logout";
   lBtn.style.backgroundColor = "red";
+}else{
+  welcome.style.visibility = "hidden";
+  lBtn.innerText = "Login";
+  lBtn.style.backgroundColor = "blue";
 }
 
 // Onload call get Todos and display
@@ -28,17 +44,29 @@ function getTodos() {
     .then((res) => res.json())
     .then((data) => {
       if (data) {
+
+        // Refresh scoreboard count
+        score1.innerText = data.length;
+
+        const doneArr = data.filter(item => item.status != 0);
+
+        score2.innerText = doneArr.length;
+
+        score3.innerText = score1.innerText - score2.innerText;
+
+        score4.innerText = ((score2.innerText/score1.innerText)*100).toFixed(1)
+
         showTodos(data);
       } else {
-        console.log("feedback");
-        feedback.innerText = "... you have no scheduled tasks for now.";
+        notify("... you have no scheduled tasks for now.");
       }
     })
-    .catch(
-      (err) =>
-        (feedback.innerText = "... could not fetch scheduled tasks for now.")
-    );
+    .catch((err) => notify('Bad request. Try again.') );
 }
+
+// ==== Display Scoreboard counts
+
+
 
 //  End of fetch and display section ==========================================
 
@@ -47,7 +75,7 @@ addBtn.addEventListener("click", addTask);
 function addTask() {
   if (inputBox.value == "" || inputBox.value == 0) {
     inputBox.value = "";
-    alert("Please enter a task in the input box.");
+    notify("Please enter a task in the input box.");
   } else {
     const posturl = "http://127.0.0.1:8000/api/todos";
     const payload = {
@@ -55,7 +83,7 @@ function addTask() {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: "Bearer 6|lIcFZpQxcOhDFflKs0MalwRwP0nIOXlPXvNa5ALw",
+        "Authorization": localStorage.getItem('curuser')
       },
       body: JSON.stringify({
         task: inputBox.value,
@@ -66,35 +94,30 @@ function addTask() {
     fetch(posturl, payload)
       .then((response) => response.json())
       .then((resdata) => {
-        console.log(resdata);
 
         if (resdata.statuscode == 200) {
           getTodos();
         } else if ((resdata.message = "Unauthenticated.")) {
-          alert(
+          notify(
             "You are " +
               resdata.message +
               " Please login to have access to add a Todo."
           );
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => notify('Bad request or server may be temporarily down. Try again.'));
   }
 }
 
 // ====== Display Todos Map function =============================
 function showTodos(tdarray) {
-  // let task = inputBox.value;
-  // if(task == ''){
-  //     alert('Please enter a task');
-  // }else{
+ 
   ul.innerText = "";
 
   tdarray.map((todo) => {
     const li = document.createElement("li");
     const p = document.createElement("p");
     p.innerText = todo["task"];
-    // li.innerText = task;
     li.appendChild(p);
 
     const div1 = document.createElement("div");
@@ -130,40 +153,38 @@ function showTodos(tdarray) {
     delBtn.onclick = function () {
       // Send Delete request to db
       const delurl = `http://127.0.0.1:8000/api/todos/${todo["id"]}`;
-      console.log(delurl);
 
       const payload = {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer 6|lIcFZpQxcOhDFflKs0MalwRwP0nIOXlPXvNa5ALw",
+          "Accept": "application/json",
+          "Authorization": localStorage.getItem('curuser')
         },
       };
 
       fetch(delurl, payload)
         .then((response) => response.json())
         .then((resdata) => {
-          console.log(resdata);
 
           if (resdata.message == "Unauthenticated.") {
-            alert(
+            notify(
               "You are " +
                 resdata.message +
                 " You need to be logged in to have delete access."
             );
           } else {
             if (resdata == 1) {
-              // alert("Todo deleted successfully");
+              // notify("Todo deleted successfully");
             } else {
-              alert("Todo delete failed. Please try again.");
+              notify("Todo delete failed. Please try again.");
             }
 
             // location.reload();
             getTodos();
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => notify('Bad request. Try again.'));
     };
 
     // EditBtn ====================================================
@@ -173,17 +194,23 @@ function showTodos(tdarray) {
         editBtn.innerText = "Save";
         addBtn.disabled = true;
         addBtn.style.backgroundColor = "grey";
-        addBtn.innerText = "disabled";
+        // addBtn.innerText = "disabled";
       } else {
         if (inputBox.value == "" || inputBox.value == 0) {
           inputBox.value = "";
-          alert("Please enter a task in the input box.");
+          notify("Please enter a task in the input box.");
         } else {
           const completed = 0;
           updateTodo(todo["id"], completed, inputBox.value);
         }
       }
     });
+
+    function returnebtn(){
+      editBtn.innerText = "Edit";
+      inputBox.value = "";
+      getTodos();
+    }
     // End of editBtn section ====================================
 
     // Done Btn ====================================================
@@ -206,10 +233,9 @@ function searchTodos() {
 
   if (searchitem == "" || searchitem == 0) {
     inputBox.value = "";
-    alert("Please enter a searchitem in the input box.");
+    notify("Please enter a searchitem in the input box.");
   } else {
     const searchurl = `http://127.0.0.1:8000/api/todos/search/${searchitem}`;
-    console.log(searchurl);
 
     const payload = {
       headers: {
@@ -229,7 +255,7 @@ function searchTodos() {
           ul.innerHTML = '<li class="liclass">No match found</li>';
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => notify('Failed. There is an issue with the request.'));
   }
 }
 
@@ -241,7 +267,7 @@ function updateTodo(todoid, statusState, tasktxt) {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer 6|lIcFZpQxcOhDFflKs0MalwRwP0nIOXlPXvNa5ALw",
+      Authorization: localStorage.getItem('curuser')
     },
     body: JSON.stringify({
       task: tasktxt,
@@ -252,23 +278,25 @@ function updateTodo(todoid, statusState, tasktxt) {
   fetch(updateurl, payload)
     .then((response) => response.json())
     .then((resdata) => {
-      console.log(resdata);
 
       if (resdata == 1) {
         // doneBtn.style.backgroundColor = 'green';
         // doneBtn.innerText = "Done"
         getTodos();
       } else if (resdata == 0) {
-        alert("Todo could not be updated. Please try again.");
+        notify("Todo could not be updated. Please try again.");
       } else if (resdata.message == "Unauthenticated.") {
-        alert(
+        notify(
           "You are " +
             resdata.message +
             " Please login to have access to update a Todo."
         );
+        addBtn.disabled = false;
+        addBtn.style.backgroundColor = "#4785ff";
+        getTodos();
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => notify('Bad request. Try again.'));
 }
 
 
@@ -289,7 +317,7 @@ function regNewUser(e) {
   // Handle Registration ============================================
   if (submitBtn.value == "Register") {
     if (password != password2) {
-      alert("Passwords does not match.");
+      notify1("Passwords does not match.");
     } else {
       const regposturl = "http://127.0.0.1:8000/api/register";
       const payload = {
@@ -308,18 +336,23 @@ function regNewUser(e) {
       fetch(regposturl, payload)
         .then((response) => response.json())
         .then((regdata) => {
-          console.log(regdata);
 
           if (regdata.statuscode == 201) {
 
-            alert("New User Registration successful. Please Login.");
+            notify1("New User Registration successful. Please Login.");
             displayLoginForm();
 
+          } else if(regdata.statuscode == 402) {
+
+            notify1(regdata.message);
+
           } else {
-            alert("Your Registration failed. Please try again.");
+
+            notify1(regdata.errors.email + "Please register with another email.");
+
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => notify1('Bad request. Try again.'));
     }
 
   }else{
@@ -327,7 +360,7 @@ function regNewUser(e) {
     // Handle Login ===================================================
     if (!email || !password) {
 
-      alert("Please fill email and password.");
+      notify1("Please fill email and password.");
 
     } else {
 
@@ -347,10 +380,12 @@ function regNewUser(e) {
       fetch(logposturl, payload)
         .then((response) => response.json())
         .then((logdata) => {
-          console.log(logdata);
 
-          if (logdata.statuscode == 201) {
-            localStorage.setItem("curuser", logdata.token);
+          if (logdata.statuscode == 200) {
+
+            // Add Bearer to the token
+            const btoken = `Bearer ${logdata.token}`;
+            localStorage.setItem("curuser", btoken);
             localStorage.setItem("username", logdata.user.name);
 
             lBtn.innerText = "Logout";
@@ -361,10 +396,10 @@ function regNewUser(e) {
             regFormDiv.style.display = "none";
             document.getElementById("todoarea").style.display = "block";
           } else {
-            alert("Wrong email or password. Please try again.");
+            notify1("Wrong email or password. Please try again.");
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => notify1('Bad request. Try again.'));
     }
 
   }
@@ -376,50 +411,60 @@ function regNewUser(e) {
 
 // Show Registration form ======================================
 function showRegForm() {
+
+  if(lBtn.innerText == "Login"){
   regFormDiv.style.display = "block";
   document.getElementById("nameinp").style.display = "block";
   document.getElementById("passinp2").style.display = "block";
   document.getElementById("submitbtn").value = "Register";
   document.getElementById("todoarea").style.display = "none";
+
+  }else{
+    notify("A user is already logged in. Please log the user out first.")
+  }
 }
 
-// Handle Logout & Show Login form
+// =========================================================
+// Handle Logout & Show Login form ===========================
 function showLoginForm() {
 
-  if(lBtn.innerText = "Logout"){
+  if(lBtn.innerText == "Logout"){
 
     console.log("logged out");
+    console.log(localStorage.getItem('curuser'));
     const logoposturl = "http://127.0.0.1:8000/api/logout";
     const payload = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": "Bearer 6|lIcFZpQxcOhDFflKs0MalwRwP0nIOXlPXvNa5ALw",
+        "Authorization": localStorage.getItem('curuser')
       },
     };
 
     fetch(logoposturl, payload)
       .then((response) => response.json())
       .then((logdata) => {
-        console.log(logdata);
 
         if (logdata.statuscode == 200) {
-          localStorage.setItem("curuser", null);
-          localStorage.setItem("username", null);
+          localStorage.setItem("curuser", "none");
+          localStorage.setItem("username", "none");
 
           lBtn.innerText = "Login";
-
           welcome.style.visibility = "hidden";
 
-        } else {
+        } else if(logdata.message == 'Unauthenticated.') {
 
-          alert("You are already logged out");
+          notify(`You are ${logdata.message}`);
+
+        }else {
+
+          notify("You are already logged out");
 
         }
 
       })
-      .catch((err) => console.log(err));
+      .catch((err) => notify('Bad request. Try again.'));
 
     
   }else{
@@ -444,3 +489,44 @@ function closeForm() {
   regFormDiv.style.display = "none";
   document.getElementById("todoarea").style.display = "block";
 }
+
+// Error feedback notification handler
+function notify(txt){
+
+  feedback.innerText = txt;
+  feedback.style.visibility = 'visible';
+
+  setTimeout(()=> {
+    feedback.style.visibility = 'hidden';
+  }, 3000)
+}
+
+function notify1(txt){
+
+  feedback1.innerText = txt;
+  feedback1.style.visibility = 'visible';
+
+  setTimeout(()=> {
+    feedback1.style.visibility = 'hidden';
+    feedback1.style.position = 'absolute';
+
+  }, 3000)
+}
+
+// Handle Enter key to add new todo
+addEventListener('keypress', (e) => {
+  
+  if(e.keyCode == 13)  addTask();
+
+});
+
+
+// Hnadle Scores
+const lis = ul.getElementsByTagName('li');
+// const spanUndone = lis.getElementsByTagName('span');
+console.log(lis.length);
+
+const liArr = Array.from(lis);
+console.log(liArr);
+// console.log(spanDone.length);
+// console.log(spanUndone.length);

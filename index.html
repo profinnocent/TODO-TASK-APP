@@ -30,6 +30,8 @@
 
       <!-- Registration  -->
       <div class="regformdiv">
+        <p class="feedback1"></p>
+
         <h2>Registration Form</h2>
         <form id="regform">
         <input type="text" name="nameinp" id="nameinp" placeholder="Enter your name">
@@ -41,6 +43,36 @@
          <button id="closebtn" onclick="closeForm()">Click to Cancel (X)</button>
       </div>
 
+      <!-- scorebaord -->
+      <h6 class="sbtxt">Your Scoreboard</h6>
+
+      <div class="scoreboard">
+        <div class="tcard">
+            <!-- <span class="ticon ticon1">&#9783</span> -->
+            <span class="score score1">34 </span>
+            <span>tasks</span>
+        </div>
+        <div class="tcard">
+          <!-- <span class="ticon ticon2">&#9745</span>
+          <span> --></span>
+          <span class="score score2">12 </span>
+          <span>done</span>
+      </div>
+      <div class="tcard">
+        <!-- <span class="ticon ticon3">&#9746</span>
+        <span> --></span>
+        <span class="score score3">20 </span>
+        <span>undone</span>
+    </div>
+    <div class="tcard">
+      <!-- <span class="ticon ticon4">&#8778</span>
+      <span> --></span>
+      <span class="score score4">34 </span>
+      <span>%</span>
+  </div>
+      </div>
+
+      <!-- scorebaord -->
 
       <div id="todoarea">
       <!-- Todo section -->
@@ -49,7 +81,7 @@
           ...get organised by managing all your tasks in one place.
         </p>
 
-        <input type="text" id="inputbox" placeholder="Enter a task here" />
+        <input type="text" id="inputbox" placeholder="Enter a task here...  (then click ADD or press Enter)" />
         <div class="inputbtns">
             <input type="button" id="addbtn" value="ADD" />
             <input type="button" id="searchbtn" onclick="searchTodos()" value="SEARCH" />
@@ -58,7 +90,7 @@
       </div>
       <div class="taskpanel">
         <p class="feedback"></p>
-        <div>
+        <div class="ulbox">
         <ul reversed>
           <!-- <li class='remclass'>test item
                 <button class="delbtn">x</button>
@@ -67,6 +99,9 @@
         </div>
       </div>
     </div>
+    <footer>
+      <p>&copy; All rights reserved || Designed by <span id="fspan">DevProf</span></p>
+    </footer>
     </div>
 
     <script src="main.js"></script>

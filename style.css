@@ -29,7 +29,11 @@ button{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 10px;
+    padding: 0 10px 0;
+}
+
+.top h1{
+    font-size: 1.5rem;
 }
 
 #regbtn{
@@ -47,7 +51,7 @@ button{
 padding: 5px 7px;
 height: 70px;
 border-bottom: 1px solid var(--offwyt);
-margin-bottom: 20px;
+margin-bottom: 10px;
 }
 
 .logoarea{
@@ -61,6 +65,7 @@ margin-bottom: 20px;
     align-items: center;
     color: var(--offwyt);
     margin: 5px;
+    /* margin-bottom: 0; */
     visibility: hidden;
 }
 
@@ -79,6 +84,7 @@ margin-bottom: 20px;
     text-transform:capitalize;
 }
 
+/* Reg & Login form area =================================== */
 .regformdiv{
     /* position: absolute;
     visibility: hidden; */
@@ -130,6 +136,67 @@ border-radius: 10px;
     text-decoration: underline;
 }
 
+/* Scorebaord Area =================================== */
+.scoreboard{
+    display: flex;
+    justify-content: space-evenly;
+    color: var(--offwyt);
+}
+.tcard{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid var(--actclr);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.ticon{
+    font-size: 1rem;
+}
+
+.sbtxt{
+    color: var(--offwyt);
+    margin-left: 15px;
+    margin-bottom: 5px;
+}
+.score{
+    font-size: 1.7rem;
+    font-weight: bold;
+    margin-right: 3px;
+}
+
+.score1{
+    color: yellow;
+    font-size: 1rem;
+
+}
+
+.score2{
+    color: rgb(127, 224, 127);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.score3{
+    color: rgb(250, 79, 79);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.score4{
+    color: rgb(248, 181, 58);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+
+
+
+
+
+/* Scorebaord Area =================================== */
+
 .container{
     background-color:var(--priclr);
     height: 95%;
@@ -153,25 +220,34 @@ h1{
     padding-left: 5px;
 }
 
-.feedback{
+.feedback, .feedback1{
     text-align: center;
     color: var(--offwyt);
-}
+    background-color: red;
+    padding: 5px;
+    margin: 5px 10px;
+    border-radius: 25px;
+    visibility: hidden;
+    transition: visibility 3s;
+    }
+
+
+
 .inputs{
     text-align: center;
     margin: 10px 0 20px;
 }
 
 input{
-    height: 40px;
+    height: 30px;
 }
 
 #inputbox{
     width: 95%;
     padding: 0 5px;
     border-radius: 5px;
-    /* border: 2px solid brown; */
     background-color: whitesmoke;
+    text-align: center;
 }
 
 .inputbtns{
@@ -197,16 +273,21 @@ input{
     margin: 0 20px;
 }
 
+.ulbox{
+    height: 250px;
+    overflow-y: scroll;
+}
+
 ul{
     display: flex;
     flex-direction: column-reverse;
-    height: auto;
+    /* height: 280px;
+    overflow-y: scroll; */
 }
 
 .liclass{
     margin: 5px 10px;
     border-radius: 5px;
-    /* border:2px solid brown; */
     padding: 5px 10px;
     display: flex;
     justify-content: space-between;
@@ -256,4 +337,47 @@ border: none;
 
 .remclass{
     display: none;
+}
+
+footer{
+    height: 5px;
+    text-align: center;
+    color: var(--offwyt);
+    margin-top: 5px;
+    font-size: 12px;
+    /* border-top: 1px soldi var(--offwyt); */
+    padding-top: 5px;
+}
+
+footer #fspan{
+    color: var(--offwyt);
+    font-size: bold;
+    background-color: green;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+
+/* ================================================== */
+/* Media Query =============================== */
+@media only screen and (max-width:576px){
+    .ulbox{
+        height: 320px;
+        overflow-y: scroll;
+    }
+
+    footer{
+
+    }
+}
+
+@media only screen and (max-width:400px){
+    .ulbox{
+        height: 380px;
+        overflow-y: scroll;
+    }
+
+    .ticon{
+        display: none;
+    }
 }
