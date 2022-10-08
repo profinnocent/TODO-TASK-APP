@@ -20,6 +20,9 @@ let cdone = 0;
 let cundone = 0;
 let cpercent = 0;
 
+if (localStorage.getItem("curuser") === null) {
+  localStorage.setItem("curuser", "none");
+}
 // Print welcome info
 if (localStorage.getItem("curuser") != "none") {
   welcome.style.visibility = "visible";
@@ -427,6 +430,7 @@ function showLoginForm() {
         "Content-Type": "application/json",
         Accept: "application/json",
         Authorization: localStorage.getItem("curuser"),
+        // Authorization: 'Bearer 17|rFuhKYiD9Z1F6hsoBNbomZSwL2EIaC9aT44jWB6T';
       },
     };
 
