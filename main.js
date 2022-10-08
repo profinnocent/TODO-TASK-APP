@@ -1,6 +1,6 @@
 const welcome = document.querySelector(".logo");
 const username = document.querySelector("#username");
-const lBtn = document.getElementById('lbtn');
+const lBtn = document.getElementById("lbtn");
 const ul = document.querySelector("ul");
 const inputBox = document.querySelector("#inputbox");
 const feedback = document.querySelector(".feedback");
@@ -20,14 +20,13 @@ let cdone = 0;
 let cundone = 0;
 let cpercent = 0;
 
-
 // Print welcome info
 if (localStorage.getItem("curuser") != "none") {
   welcome.style.visibility = "visible";
   username.innerText = localStorage.getItem("username");
   lBtn.innerText = "Logout";
   lBtn.style.backgroundColor = "red";
-}else{
+} else {
   welcome.style.visibility = "hidden";
   lBtn.innerText = "Login";
   lBtn.style.backgroundColor = "blue";
@@ -38,35 +37,40 @@ getTodos();
 
 // Fetch the todos from db ==================================================
 function getTodos() {
-  const url = "http://127.0.0.1:8000/api/todos";
+  // const url = "http://127.0.0.1:8000/api/todos";
+  const url = "https://polar-island-98797.herokuapp.com/api/todos";
 
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
       if (data) {
-
         // Refresh scoreboard count
         score1.innerText = data.length;
 
-        const doneArr = data.filter(item => item.status != 0);
+        const doneArr = data.filter((item) => item.status != 0);
 
         score2.innerText = doneArr.length;
 
         score3.innerText = score1.innerText - score2.innerText;
 
-        score4.innerText = ((score2.innerText/score1.innerText)*100).toFixed(1)
+        score4.innerText = (
+          (score2.innerText / score1.innerText) *
+          100
+        ).toFixed(1);
 
         showTodos(data);
       } else {
         feedback.innerText = "... you have no scheduled tasks for now.";
       }
     })
-    .catch((err) => feedback.innerText = 'Bad request or server temporarily down. Try again later.');
+    .catch(
+      (err) =>
+        (feedback.innerText =
+          "Bad request or server temporarily down. Try again later.")
+    );
 }
 
 // ==== Display Scoreboard counts
-
-
 
 //  End of fetch and display section ==========================================
 
@@ -77,13 +81,14 @@ function addTask() {
     inputBox.value = "";
     notify("Please enter a task in the input box.");
   } else {
-    const posturl = "http://127.0.0.1:8000/api/todos";
+    // const posturl = "http://127.0.0.1:8000/api/todos";
+    const posturl = "https://polar-island-98797.herokuapp.com/api/todos";
     const payload = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        "Authorization": localStorage.getItem('curuser')
+        Authorization: localStorage.getItem("curuser"),
       },
       body: JSON.stringify({
         task: inputBox.value,
@@ -94,7 +99,6 @@ function addTask() {
     fetch(posturl, payload)
       .then((response) => response.json())
       .then((resdata) => {
-
         if (resdata.statuscode == 200) {
           getTodos();
         } else if ((resdata.message = "Unauthenticated.")) {
@@ -105,13 +109,14 @@ function addTask() {
           );
         }
       })
-      .catch((err) => notify('Bad request or server may be temporarily down. Try again.'));
+      .catch((err) =>
+        notify("Bad request or server may be temporarily down. Try again.")
+      );
   }
 }
 
 // ====== Display Todos Map function =============================
 function showTodos(tdarray) {
- 
   ul.innerText = "";
 
   tdarray.map((todo) => {
@@ -152,21 +157,21 @@ function showTodos(tdarray) {
     // delBtn ======================================================
     delBtn.onclick = function () {
       // Send Delete request to db
-      const delurl = `http://127.0.0.1:8000/api/todos/${todo["id"]}`;
+      // const delurl = `http://127.0.0.1:8000/api/todos/${todo["id"]}`;
+      const delurl = `https://polar-island-98797.herokuapp.com/api/todos/${todo["id"]}`;
 
       const payload = {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Authorization": localStorage.getItem('curuser')
+          Accept: "application/json",
+          Authorization: localStorage.getItem("curuser"),
         },
       };
 
       fetch(delurl, payload)
         .then((response) => response.json())
         .then((resdata) => {
-
           if (resdata.message == "Unauthenticated.") {
             notify(
               "You are " +
@@ -184,7 +189,7 @@ function showTodos(tdarray) {
             getTodos();
           }
         })
-        .catch((err) => notify('Bad request. Try again.'));
+        .catch((err) => notify("Bad request. Try again."));
     };
 
     // EditBtn ====================================================
@@ -206,7 +211,7 @@ function showTodos(tdarray) {
       }
     });
 
-    function returnebtn(){
+    function returnebtn() {
       editBtn.innerText = "Edit";
       inputBox.value = "";
       getTodos();
@@ -235,7 +240,8 @@ function searchTodos() {
     inputBox.value = "";
     notify("Please enter a searchitem in the input box.");
   } else {
-    const searchurl = `http://127.0.0.1:8000/api/todos/search/${searchitem}`;
+    // const searchurl = `http://127.0.0.1:8000/api/todos/search/${searchitem}`;
+    const searchurl = `https://polar-island-98797.herokuapp.com/api/todos/search/${searchitem}`;
 
     const payload = {
       headers: {
@@ -255,19 +261,20 @@ function searchTodos() {
           ul.innerHTML = '<li class="liclass">No match found</li>';
         }
       })
-      .catch((err) => notify('Failed. There is an issue with the request.'));
+      .catch((err) => notify("Failed. There is an issue with the request."));
   }
 }
 
 // Upadte Todo function ========================================
 function updateTodo(todoid, statusState, tasktxt) {
-  const updateurl = `http://127.0.0.1:8000/api/todos/${todoid}`;
+  // const updateurl = `http://127.0.0.1:8000/api/todos/${todoid}`;
+  const updateurl = `https://polar-island-98797.herokuapp.com/api/todos/${todoid}`;
   const payload = {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: localStorage.getItem('curuser')
+      Authorization: localStorage.getItem("curuser"),
     },
     body: JSON.stringify({
       task: tasktxt,
@@ -278,7 +285,6 @@ function updateTodo(todoid, statusState, tasktxt) {
   fetch(updateurl, payload)
     .then((response) => response.json())
     .then((resdata) => {
-
       if (resdata == 1) {
         // doneBtn.style.backgroundColor = 'green';
         // doneBtn.innerText = "Done"
@@ -296,9 +302,8 @@ function updateTodo(todoid, statusState, tasktxt) {
         getTodos();
       }
     })
-    .catch((err) => notify('Bad request. Try again.'));
+    .catch((err) => notify("Bad request. Try again."));
 }
-
 
 // =======================================================================
 // Registration & Login handler ==========================================
@@ -319,7 +324,9 @@ function regNewUser(e) {
     if (password != password2) {
       notify1("Passwords does not match.");
     } else {
-      const regposturl = "http://127.0.0.1:8000/api/register";
+      // const regposturl = "http://127.0.0.1:8000/api/register";
+      const regposturl =
+        "https://polar-island-98797.herokuapp.com/api/register";
       const payload = {
         method: "POST",
         headers: {
@@ -336,40 +343,31 @@ function regNewUser(e) {
       fetch(regposturl, payload)
         .then((response) => response.json())
         .then((regdata) => {
-
           if (regdata.statuscode == 201) {
-
             notify1("New User Registration successful. Please Login.");
             displayLoginForm();
-
-          } else if(regdata.statuscode == 402) {
-
+          } else if (regdata.statuscode == 402) {
             notify1(regdata.message);
-
           } else {
-
-            notify1(regdata.errors.email + "Please register with another email.");
-
+            notify1(
+              regdata.errors.email + "Please register with another email."
+            );
           }
         })
-        .catch((err) => notify1('Bad request. Try again.'));
+        .catch((err) => notify1("Bad request. Try again."));
     }
-
-  }else{
-
+  } else {
     // Handle Login ===================================================
     if (!email || !password) {
-
       notify1("Please fill email and password.");
-
     } else {
-
-      const logposturl = "http://127.0.0.1:8000/api/login";
+      // const logposturl = "http://127.0.0.1:8000/api/login";
+      const logposturl = "https://polar-island-98797.herokuapp.com/api/login";
       const payload = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify({
           email: email,
@@ -380,9 +378,7 @@ function regNewUser(e) {
       fetch(logposturl, payload)
         .then((response) => response.json())
         .then((logdata) => {
-
           if (logdata.statuscode == 200) {
-
             // Add Bearer to the token
             const btoken = `Bearer ${logdata.token}`;
             localStorage.setItem("curuser", btoken);
@@ -399,84 +395,64 @@ function regNewUser(e) {
             notify1("Wrong email or password. Please try again.");
           }
         })
-        .catch((err) => notify1('Bad request. Try again.'));
+        .catch((err) => notify1("Bad request. Try again."));
     }
-
   }
-
-
 }
-
-
 
 // Show Registration form ======================================
 function showRegForm() {
-
-  if(lBtn.innerText == "Login"){
-  regFormDiv.style.display = "block";
-  document.getElementById("nameinp").style.display = "block";
-  document.getElementById("passinp2").style.display = "block";
-  document.getElementById("submitbtn").value = "Register";
-  document.getElementById("todoarea").style.display = "none";
-
-  }else{
-    notify("A user is already logged in. Please log the user out first.")
+  if (lBtn.innerText == "Login") {
+    regFormDiv.style.display = "block";
+    document.getElementById("nameinp").style.display = "block";
+    document.getElementById("passinp2").style.display = "block";
+    document.getElementById("submitbtn").value = "Register";
+    document.getElementById("todoarea").style.display = "none";
+  } else {
+    notify("A user is already logged in. Please log the user out first.");
   }
 }
 
 // =========================================================
 // Handle Logout & Show Login form ===========================
 function showLoginForm() {
-
-  if(lBtn.innerText == "Logout"){
-
-    console.log("logged out");
-    console.log(localStorage.getItem('curuser'));
-    const logoposturl = "http://127.0.0.1:8000/api/logout";
+  if (lBtn.innerText == "Logout") {
+    // console.log("logged out");
+    // console.log(localStorage.getItem('curuser'));
+    // const logoposturl = "http://127.0.0.1:8000/api/logout";
+    const logoposturl = "https://polar-island-98797.herokuapp.com/api/logout";
     const payload = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Authorization": localStorage.getItem('curuser')
+        Accept: "application/json",
+        Authorization: localStorage.getItem("curuser"),
       },
     };
 
     fetch(logoposturl, payload)
       .then((response) => response.json())
       .then((logdata) => {
-
         if (logdata.statuscode == 200) {
           localStorage.setItem("curuser", "none");
           localStorage.setItem("username", "none");
 
           lBtn.innerText = "Login";
           welcome.style.visibility = "hidden";
-
-        } else if(logdata.message == 'Unauthenticated.') {
-
+        } else if (logdata.message == "Unauthenticated.") {
           notify(`You are ${logdata.message}`);
-
-        }else {
-
+        } else {
           notify("You are already logged out");
-
         }
-
       })
-      .catch((err) => notify('Bad request. Try again.'));
-
-    
-  }else{
-    
-   displayLoginForm();
-
+      .catch((err) => notify("Bad request. Try again."));
+  } else {
+    displayLoginForm();
   }
-
 }
 
 // Display Login form
-function displayLoginForm(){
+function displayLoginForm() {
   regFormDiv.style.display = "block";
   document.getElementById("nameinp").style.display = "none";
   document.getElementById("passinp2").style.display = "none";
@@ -491,42 +467,26 @@ function closeForm() {
 }
 
 // Error feedback notification handler
-function notify(txt){
-
+function notify(txt) {
   feedback.innerText = txt;
-  feedback.style.visibility = 'visible';
+  feedback.style.visibility = "visible";
 
-  setTimeout(()=> {
-    feedback.style.visibility = 'hidden';
-  }, 3000)
+  setTimeout(() => {
+    feedback.style.visibility = "hidden";
+  }, 3000);
 }
 
-function notify1(txt){
-
+function notify1(txt) {
   feedback1.innerText = txt;
-  feedback1.style.visibility = 'visible';
+  feedback1.style.visibility = "visible";
 
-  setTimeout(()=> {
-    feedback1.style.visibility = 'hidden';
-    feedback1.style.position = 'absolute';
-
-  }, 3000)
+  setTimeout(() => {
+    feedback1.style.visibility = "hidden";
+    feedback1.style.position = "absolute";
+  }, 3000);
 }
 
 // Handle Enter key to add new todo
-addEventListener('keypress', (e) => {
-  
-  if(e.keyCode == 13)  addTask();
-
+addEventListener("keypress", (e) => {
+  if (e.keyCode == 13) addTask();
 });
-
-
-// Hnadle Scores
-const lis = ul.getElementsByTagName('li');
-// const spanUndone = lis.getElementsByTagName('span');
-console.log(lis.length);
-
-const liArr = Array.from(lis);
-console.log(liArr);
-// console.log(spanDone.length);
-// console.log(spanUndone.length);
